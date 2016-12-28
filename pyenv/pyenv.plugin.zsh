@@ -1,6 +1,6 @@
 FOUND_PYENV=0
 
-if [-d "$HOME/.pyenv"]; then
+if [ -d "$HOME/.pyenv" ]; then
     FOUND_PYENV=1
 
     export PYENV_ROOT="$HOME/.pyenv"
