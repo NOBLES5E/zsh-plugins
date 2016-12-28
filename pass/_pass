@@ -83,6 +83,7 @@ _pass () {
 				;;
 		esac
 	else
+		_pass_cmd_show
 		local -a subcommands
 		subcommands=(
 			"init:Initialize new password storage"
@@ -104,21 +105,19 @@ _pass () {
 		_arguments : \
 			"--version[Output version information]" \
 			"--help[Output help message]"
-		_pass_cmd_show
 	fi
 }
 
 _pass_cmd_show () {
-	_arguments : \
-		"-c[put it on the clipboard]" \
-		"--clip[put it on the clipboard]"
 	_pass_complete_entries
+	_arguments : \
+		         "-c[put it on the clipboard]" \
+		         "--clip[put it on the clipboard]"
 }
 _pass_complete_entries_helper () {
 	local IFS=$'\n'
 	local prefix="${PASSWORD_STORE_DIR:-$HOME/.password-store}"
-	_arguments : ${$(find -L "$prefix" \( -name .git -o -name .gpg-id \) -prune -o $@ -print 2>/dev/null | sed -e "s#${prefix}/\{0,1\}##" -e 's#\.gpg##' | sort):-""}
-	# _values -C 'passwords' ${$(find -L "$prefix" \( -name .git -o -name .gpg-id \) -prune -o $@ -print 2>/dev/null | sed -e "s#${prefix}/\{0,1\}##" -e 's#\.gpg##' | sort):-""}
+	_values -C 'password' ${$(find -L "$prefix" \( -name .git -o -name .gpg-id \) -prune -o $@ -print 2>/dev/null | sed -e "s#${prefix}/\{0,1\}##" -e 's#\.gpg##' | sort):-""}
 }
 
 _pass_complete_entries_with_subdirs () {
